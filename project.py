@@ -25,7 +25,7 @@ class Tile:
     
     @letter.setter
     def letter(self, letter: str):
-        if isinstance(letter, str) == False:
+        if isinstance(letter, str) is False:
             raise TypeError("Needs to be a string")
         elif len(letter) > 1:
             raise ValueError("Must be a single letter")
@@ -41,7 +41,7 @@ class Tile:
     
     @tile_count.setter
     def tile_count(self, tile_count: int):
-        if isinstance(tile_count, int) == False:
+        if isinstance(tile_count, int) is False:
             raise TypeError("Needs to be an int")
         elif tile_count < 0:
             raise ValueError("Cannot have negative amount of tiles")
@@ -57,7 +57,7 @@ class Tile:
     
     @points_value.setter
     def points_value(self, points_value: int):
-        if isinstance(points_value, int) == False:
+        if isinstance(points_value, int) is False:
             raise TypeError("Needs to be an int")
         elif points_value < 0:
             raise ValueError("Points cannot be negative")
@@ -87,7 +87,7 @@ def main():
     user_choice = None
 
     while True:
-        if user_choice == None:
+        if user_choice is None:
             pass
         elif user_choice == '1':
             mode_1()
@@ -279,7 +279,7 @@ def is_valid(word: str, available_letters: str) -> bool:
     Checks if the user's input is a valid word based on available letters
 
     :param word: User's word they inputted
-    :param available_letters: Valid letters to use, ? means any letter
+    :param available_letters: Valid letters to use. ? means any letter
     """
     blank_tiles = available_letters.count('?')
     for letter in word:
@@ -317,7 +317,7 @@ def mode_2_results(correct_words: str | list, guess: str) -> None:
         if len(correct_words) == 1:
             print(f"Incorrect. The longest word is: {correct_words[0]}")
         else:
-            print(f"Incorrect. The longest words are:")
+            print(f"Incorrect. The longest words are: ")
             for w in correct_words:
                 print(w)
 
@@ -358,11 +358,12 @@ def create_tiles() -> list:
     return tiles_to_generate
 
 
-def generate_letters_tiles(tile_instances: list, amount: int = 7) -> str:
+def generate_letters_tiles(tile_instances: tuple, amount: int = 7) -> str:
     """
     Generate a string of random letters, sample is weighted based on remaining tiles.
     ? represents blank tiles which can be used as any letter
 
+    :param tile_instances: Tiles instances to check for what are valid tiles to create
     :param amount: Number of letters to return
     :return: A string of letters that are to be used to make words
     """
@@ -372,7 +373,7 @@ def generate_letters_tiles(tile_instances: list, amount: int = 7) -> str:
     return selected_letters
 
 
-def multiple_tiles_withdrawn(letters: str, tile_instances: list) -> None:
+def multiple_tiles_withdrawn(letters: str, tile_instances: tuple) -> None:
     """Reduce the tile count of used letters"""
     for letter in letters:
         for tile in tile_instances:
@@ -381,7 +382,7 @@ def multiple_tiles_withdrawn(letters: str, tile_instances: list) -> None:
                 break
 
 
-def calculate_word_score(word: str, tile_instances: list) -> int:
+def calculate_word_score(word: str, tile_instances: tuple) -> int:
     """Return total score of the word based on the point value of each letter"""
     total_score = 0
     for letter in word:
@@ -392,13 +393,14 @@ def calculate_word_score(word: str, tile_instances: list) -> int:
     return total_score
 
 
-def highest_point_words(letters: str, tile_instances: list) -> tuple | str:
+def highest_point_words(letters: str, tile_instances: tuple) -> tuple | str:
     """
     Create a list of the highest scoring words based on available letters, or says if there are no valid words
 
     :param letters: Available letters to make words from
     :param tile_instances: List of tile instances
-    :return: A tuple with list of highest scoring words and the max score as an int, or a string saying no words can be made
+    :return: A tuple with list of highest scoring words and the max score as an int, or a string saying no words
+    can be made
     """
     max_score = 0
     best_words = []
@@ -422,8 +424,10 @@ def mode_3_results(highest_score_words: str | tuple, guess: str, user_score: int
     """
     Prints response based on if there are valid words and if the user guessed correctly
 
-    :param highest_score_words: Either a string saying there a no valid words, or a list of words with highest score
+    :param highest_score_words: Either a string saying there a no valid words, or a list of words with
+    the highest score
     :param guess: The user's guess for highest scoring word
+    :param user_score: The score of the user's word
     """
     if isinstance(highest_score_words, str) and guess == "":
         print(f"Correct! {highest_score_words}")
@@ -436,21 +440,21 @@ def mode_3_results(highest_score_words: str | tuple, guess: str, user_score: int
             if len(highest_words) == 1:
                 print(f"Correct! You guessed the highest word!")
             else:
-                print(f"Correct! Other words with the same score are:")
+                print(f"Correct! Other words with the same score are: ")
                 for word in highest_words:
                     print(word)
         else:
             print(f"Incorrect. The computer's highest score was {highest_score}.")
             if len(highest_words) == 1:
-                print(f"The word was:")
+                print(f"The word was: ")
                 print(highest_words[0])
             else:
-                print(f"The words are:")
+                print(f"The words are: ")
                 for word in highest_words:
                     print(word)
 
 
-def tiles_remaining(tile_instances: list) -> int:
+def tiles_remaining(tile_instances: tuple) -> int:
     """Returns total tiles left"""
     remaining_tiles = 0
     for tile in tile_instances:
@@ -458,7 +462,7 @@ def tiles_remaining(tile_instances: list) -> int:
     return remaining_tiles
         
 
-def refill_bag(tile_instances: list) -> None:
+def refill_bag(tile_instances: tuple) -> None:
     """Resets tiles to their max_tile_count"""
     for tile in tile_instances:
         tile.reset_tiles()
